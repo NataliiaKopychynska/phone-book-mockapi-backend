@@ -3,8 +3,9 @@ import s from "./ContactForm.module.css";
 
 import { ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { addContactThunk } from "../../redux/contactsOps";
 import { useDispatch } from "react-redux";
-import { addContact } from "../../redux/contactsSice";
+// import { addContact } from "../../redux/contactsSice";
 
 export default function ContactForm() {
   const dispatch = useDispatch();
@@ -15,19 +16,19 @@ export default function ContactForm() {
       .max(50, "To Long!")
       .required("Name is required"),
     numberContact: Yup.string()
-      .min(7, "Is not a phone!")
-      .max(7, "Is not a phone!")
+      .min(10, "Is not a phone!")
+      .max(10, "Is not a phone!")
       .required("Number is required"),
   });
 
   const handleAddContact = (values, actions) => {
     const newContact = {
-      id: Date.now().toString(),
+      // id: Date.now().toString(),
       name: values.nameContact,
       number: values.numberContact,
     };
 
-    dispatch(addContact(newContact));
+    dispatch(addContactThunk(newContact));
     actions.resetForm();
   };
 

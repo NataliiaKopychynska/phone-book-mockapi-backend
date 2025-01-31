@@ -1,14 +1,16 @@
 import { useDispatch } from "react-redux";
-import { deleteContact } from "../../redux/contactsSice";
+// import { deleteContact } from "../../redux/contactsSice";
+import { deleteContactsThunk, editContactThunk } from "../../redux/contactsOps";
 import s from "./Contact.module.css";
 import { FaUser, FaPhoneAlt } from "react-icons/fa";
+import { contactsSlice, selectContacts } from "../../redux/contactsSice";
 
 export default function Contact({ contactName, contactNumber, id }) {
-  const dirpath = useDispatch();
+  const dispatch = useDispatch();
 
-  const handleDeleteContact = (id) => {
-    dirpath(deleteContact(id));
-  };
+  // const handleDeleteContact = (id) => {
+  //   // dirpath(deleteContact(id));
+  // };
 
   return (
     <li className={s.containerContact}>
@@ -27,32 +29,28 @@ export default function Contact({ contactName, contactNumber, id }) {
           <p className={s.title}>{contactNumber}</p>
         </div>
       </div>
-      <button className={s.btn} onClick={() => handleDeleteContact(id)}>
-        Delete
-      </button>
+      <div className={s.divBtn}>
+        <button
+          className={s.btnEdit}
+          onClick={() =>
+            dispatch(
+              editContactThunk({
+                id,
+                name: prompt("Edit name", contactName),
+                number: prompt("Edit number", contactNumber) ?? selectContacts,
+              })
+            )
+          }
+        >
+          Edit
+        </button>
+        <button
+          className={s.btn}
+          onClick={() => dispatch(deleteContactsThunk(id))}
+        >
+          Delete
+        </button>
+      </div>
     </li>
   );
 }
-
-// <div className={s.containerList}>
-//   {contactList.map((contact) => (
-//     <div className={s.containerContact} key={contact.name}>
-//       <div className={s.contactInfo}>
-//         <div className={s.option}>
-//           <p className={s.icon}>
-//             <FaUser />
-//           </p>{" "}
-//           <p>{contact.name}</p>
-//         </div>
-
-//         <div className={s.option}>
-//           <p>
-//             <FaPhoneAlt />
-//           </p>{" "}
-//           <p>{contact.number}</p>
-//         </div>
-//       </div>
-//       <button className={s.btn}>Delete</button>
-//     </div>
-//   ))}
-// </div>

@@ -1,18 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  filters: "", // використовуємо однакову назву для state та initialState
+  filter: "",
 };
 
-export const filterSlice = createSlice({
-  name: "filters",
+const filterSlice = createSlice({
+  name: "filter",
   initialState,
   reducers: {
     setFilter: (state, action) => {
-      state.filters = action.payload; // використовуємо "filter" замість "name"
+      state.filter = action.payload;
     },
   },
 });
 
 export const { setFilter } = filterSlice.actions;
+
 export default filterSlice.reducer;
+
+export const selectFilter = (state) => state.filter;

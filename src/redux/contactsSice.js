@@ -8,6 +8,7 @@ import {
 
 const initialState = {
   contacts: [],
+  filter: "",
   isLoading: false,
   isError: null,
 };
@@ -32,6 +33,9 @@ export const contactsSlice = createSlice({
     },
     fetchDataSuccess: (state, action) => {
       state.contacts = action.payload;
+    },
+    setFilter: (state, action) => {
+      state.filter = action.payload; // 🔹 Оновлюємо фільтр
     },
   },
 
@@ -68,10 +72,19 @@ export const contactsSlice = createSlice({
   },
 });
 
+export const selectFilteredContacts = (state) => {
+  const { contacts, filter } = state.contacts;
+  return contacts.filter((contact) =>
+    contact.name.toLowerCase().includes(filter.toLowerCase())
+  );
+};
+
 // export const { addContact, deleteContact } = contactsSlice.actions;
-export const { setLoading, setError, fetchDataSuccess } = contactsSlice.actions;
+export const { setLoading, setError, fetchDataSuccess, setFilter } =
+  contactsSlice.actions;
 export default contactsSlice.reducer;
 
 export const selectContacts = (state) => state.contacts.contacts;
 export const selectIsLoading = (state) => state.contacts.isLoading;
 export const selectIsError = (state) => state.contacts.isError;
+export const selectFilter = (state) => state.contacts.filter;
